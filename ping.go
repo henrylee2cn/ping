@@ -120,9 +120,10 @@ func parseICMPEcho(b []byte) (*icmpEcho, error) {
 	return p, nil
 }
 
-func Ping(address string, timeout int) bool {
-	err := Pinger(address, timeout)
-	return err == nil
+func Ping(address string, timeout int) (alive bool, err error, timedelay time.Duration) {
+	t := time.Now()
+	err = Pinger(address, timeout)
+	return err == nil, err, time.Now().Sub(t)
 }
 
 func Pinger(address string, timeout int) error {
